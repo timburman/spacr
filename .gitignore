@@ -1,3 +1,4 @@
 *.env*
 ref-ahk/
 prompts/
+*.agents*
