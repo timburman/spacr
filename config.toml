@@ -1,0 +1,5 @@
+# Spacr Configuration File (Phase 1)
+
+workspace_count = 9
+follow_after_move = true
+modifier = "Alt"
