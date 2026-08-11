@@ -61,7 +61,7 @@ Spacr uses TOML for configuration. The configuration file `config.toml` is loade
 # Spacr Configuration File (Phase 1)
 
 workspace_count = 9
-modifier = "Alt"            # Options: "Alt", "Ctrl", "Super", "Shift"
+modifier = "Alt"            # Options: "Alt", "Ctrl", "Shift"
 follow_after_move = true    # Automatically switch workspace when moving a window
 ```
 
@@ -110,7 +110,7 @@ Every architectural decision is made to keep Spacr predictable, lightweight, and
 ### Running Spacr
 1. Clone the repository:
    ```powershell
-   git clone https://github.com/your-username/Spacr.git
+   git clone https://github.com/timburman/Spacr.git
    cd Spacr
    ```
 2. Launch `main.ahk`:
@@ -123,10 +123,10 @@ Every architectural decision is made to keep Spacr predictable, lightweight, and
 
 ## Roadmap
 
-- [x] **Phase 1 (v0.1)**: Core Workspace Manager, TOML Configuration, VDA Integration, Explorer Focus Workaround.
-- [ ] **Phase 2**: Window Tracking & Internal State System.
-- [ ] **Phase 3**: Dynamic Tiling Engine (BSP / Master-Stack Layouts).
-- [ ] **Phase 4**: Layout System & Native Window Renderer.
+- [x] **v0.1-alpha**: Core Workspace Manager, TOML Configuration, VDA Integration, Explorer Focus Workaround.
+- [ ] **v0.2**: Window Tracking & Internal State System.
+- [ ] **v0.3**: Dynamic Tiling Engine (BSP / Master-Stack Layouts).
+- [ ] **v0.4**: Layout System & Native Window Renderer.
 
 ---
 
