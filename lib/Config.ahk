@@ -4,6 +4,7 @@
 class Config {
     workspaceCount := 9
     modifier := "Alt"
+    moveModifier := "Shift"
     followAfterMove := true
 
     __New(configFilePath := "") {
@@ -47,12 +48,20 @@ class Config {
                         }
                     case "modifier":
                         this.modifier := String(parsedVal)
+                    case "move_modifier":
+                        this.moveModifier := String(parsedVal)
                     case "follow_after_move":
                         this.followAfterMove := !!parsedVal
                 }
             }
         }
 
-        Utils.Log("Config loaded successfully. workspace_count=" . this.workspaceCount . ", modifier=" . this.modifier . ", follow_after_move=" . (this.followAfterMove ? "true" : "false"))
+        ; Validate primary modifier to prevent standalone Shift from breaking standard symbol typing (!@#$%^&*())
+        if (StrLower(Trim(this.modifier)) == "shift") {
+            Utils.Log("WARNING: Standalone 'Shift' cannot be used as primary modifier. Defaulting primary modifier to 'Alt'.")
+            this.modifier := "Alt"
+        }
+
+        Utils.Log("Config loaded successfully. workspace_count=" . this.workspaceCount . ", modifier=" . this.modifier . ", move_modifier=" . this.moveModifier . ", follow_after_move=" . (this.followAfterMove ? "true" : "false"))
     }
 }
