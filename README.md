@@ -61,7 +61,8 @@ Spacr uses TOML for configuration. The configuration file `config.toml` is loade
 # Spacr Configuration File (Phase 1)
 
 workspace_count = 9
-modifier = "Alt"            # Options: "Alt", "Ctrl", "Shift"
+modifier = "Alt"            # Primary modifier (Options: "Alt", "Ctrl")
+move_modifier = "Shift"       # Secondary modifier for window movement
 follow_after_move = true    # Automatically switch workspace when moving a window
 ```
 
