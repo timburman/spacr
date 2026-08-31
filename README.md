@@ -5,7 +5,7 @@ A fast, keyboard-driven workspace management layer for Windows virtual desktops 
 [![Windows 10/11](https://img.shields.io/badge/OS-Windows%2010%20%7C%2011-blue.svg?style=flat-square&logo=windows)](https://microsoft.com/windows)
 [![AutoHotkey v2](https://img.shields.io/badge/Language-AutoHotkey%20v2-green.svg?style=flat-square)](https://www.autohotkey.com/)
 [![License MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v0.2.0--alpha-purple.svg?style=flat-square)]()
+[![Release](https://img.shields.io/badge/Release-v0.2.0--alpha-purple.svg?style=flat-square)](https://github.com/timburman/spacr/tree/v0.2.0-alpha)
 
 ---
 
