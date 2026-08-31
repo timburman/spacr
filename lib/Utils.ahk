@@ -2,7 +2,12 @@
 
 class Utils {
     static Log(message) {
-        OutputDebug("[Spacr] " . message . "`n")
+        logLine := "[" . A_YYYY . "-" . A_MM . "-" . A_DD . " " . A_Hour . ":" . A_Min . ":" . A_Sec . "] [Spacr] " . message . "`n"
+        try {
+            FileAppend(logLine, A_ScriptDir "\spacr.log")
+        } catch {
+            OutputDebug(logLine) ; Fallback if file is locked
+        }
     }
 
     static TrimQuotes(str) {
