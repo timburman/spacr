@@ -8,16 +8,23 @@ class WorkspaceManager {
     config := ""
     _currentWorkspace := 1
     _previousWorkspace := 1
+    events := ""
+    state := ""
 
-    __New(vdaInstance, configInstance) {
+    __New(vdaInstance, configInstance, eventsInstance := "", stateInstance := "") {
         this.vda := vdaInstance
         this.config := configInstance
+        this.events := eventsInstance
+        this.state := stateInstance
         
         ; Sync current workspace from VDA if available
         vdaCurrent := this.vda.GetCurrentDesktopNumber()
         if (vdaCurrent >= 0) {
             this._currentWorkspace := vdaCurrent + 1
             this._previousWorkspace := this._currentWorkspace
+            if this.state {
+                this.state.SetCurrentWorkspace(this._currentWorkspace)
+            }
         }
         
         Utils.Log("WorkspaceManager initialized. Current workspace: " . this._currentWorkspace)
@@ -88,6 +95,12 @@ class WorkspaceManager {
         if success {
             this._previousWorkspace := this._currentWorkspace
             this._currentWorkspace := index
+            if this.state {
+                this.state.SetCurrentWorkspace(index)
+            }
+            if this.events {
+                this.events.Emit("WorkspaceChanged", index)
+            }
             Utils.Log("Switched workspace: " . this._previousWorkspace . " -> " . this._currentWorkspace)
             Sleep 50
             return true
@@ -122,6 +135,12 @@ class WorkspaceManager {
         success := this.vda.MoveWindowToDesktopNumber(hwnd, zeroBasedIndex)
         if success {
             Utils.Log("Moved HWND " . hwnd . " to workspace " . index)
+            if this.state {
+                this.state.UpdateWindowWorkspace(hwnd, index)
+            }
+            if this.events {
+                this.events.Emit("WindowMoved", hwnd)
+            }
             return true
         } else {
             Utils.Log("MoveWindowToWorkspace failed for HWND " . hwnd . " to workspace " . index)
