@@ -83,4 +83,28 @@ class VDA {
             return -1
         }
     }
+
+    GetWindowDesktopNumber(hwnd) {
+        if !this.isInitialized || !hwnd {
+            return -1
+        }
+        try {
+            return DllCall(this.dllPath . "\GetWindowDesktopNumber", "Ptr", hwnd, "Int")
+        } catch as err {
+            Utils.Log("VDA GetWindowDesktopNumber failed for HWND " . hwnd . ": " . err.Message)
+            return -1
+        }
+    }
+
+    IsWindowOnCurrentVirtualDesktop(hwnd) {
+        if !this.isInitialized || !hwnd {
+            return false
+        }
+        try {
+            return DllCall(this.dllPath . "\IsWindowOnCurrentVirtualDesktop", "Ptr", hwnd, "Int")
+        } catch as err {
+            Utils.Log("VDA IsWindowOnCurrentVirtualDesktop failed for HWND " . hwnd . ": " . err.Message)
+            return false
+        }
+    }
 }
