@@ -16,12 +16,17 @@ class WindowTracker {
 
     ; Callback pointers
     cbWinEvent := 0
+    cbProcessPending := 0
+
+    ; Pending windows for delayed tracking
+    pendingWindows := Map()
 
     __New(events, state, vda) {
         this.events := events
         this.state := state
         this.vda := vda
         this.cbWinEvent := CallbackCreate(ObjBindMethod(this, "HandleWinEvent"), "", 7)
+        this.cbProcessPending := ObjBindMethod(this, "ProcessPendingWindows")
     }
 
     Start() {
@@ -96,10 +101,14 @@ class WindowTracker {
 
         if (event == 0x8000 || event == 0x8002) { ; EVENT_OBJECT_CREATE or EVENT_OBJECT_SHOW
             ; We don't check IsValidWindow here because IsWindowVisible might be false instantly upon creation.
-            ; We delegate that check to the delayed timer.
-            SetTimer(ObjBindMethod(this, "DelayedTrackWindow", hwnd), -50)
+            ; We delegate that check to the delayed timer, reusing the same timer object to prevent leaks.
+            this.pendingWindows[hwnd] := true
+            SetTimer(this.cbProcessPending, -50)
         }
         else if (event == 0x8001 || event == 0x8003) { ; EVENT_OBJECT_DESTROY or EVENT_OBJECT_HIDE
+            if this.pendingWindows.Has(hwnd) {
+                this.pendingWindows.Delete(hwnd)
+            }
             if this.state.GetWorkspaceForWindow(hwnd) != -1 {
                 this.state.RemoveWindow(hwnd)
                 this.events.Emit("WindowDestroyed", hwnd)
@@ -119,10 +128,13 @@ class WindowTracker {
         }
     }
     
-    DelayedTrackWindow(hwnd) {
-        if this.IsValidWindow(hwnd) && this.state.GetWorkspaceForWindow(hwnd) == -1 {
-            this.TrackWindow(hwnd)
+    ProcessPendingWindows() {
+        for hwnd, _ in this.pendingWindows.Clone() {
+            if this.IsValidWindow(hwnd) && this.state.GetWorkspaceForWindow(hwnd) == -1 {
+                this.TrackWindow(hwnd)
+            }
         }
+        this.pendingWindows.Clear()
     }
 
     IsValidWindow(hwnd) {
